@@ -1,17 +1,18 @@
 pipeline {
-  agent {
-    docker {
-      image 'abhishekf5/maven-abhishek-docker-agent:v1'
-      args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
+  agent any {
+environment {
+        TAG = "${DATE}.${BUILD_NUMBER}"
+  stage('Build') {
+      steps {
+        sh 'cd /pom.xml && mvn clean package'
+      }
+    }
+    stage('Docker Build') {
+      steps {
+         script {
+             docker.build("nisarga16/dockerfile:${TAG}"
+         }
+       }
     }
   }
-  stage('Build and Test') {
-      steps {
-        sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn clean package'
-      }
-    }
-    stage('Build') {
-      environment {
-        DOCKER_IMAGE = "abhishekf5/ultimate-cicd:${BUILD_NUMBER}
-        }
-      }
+
