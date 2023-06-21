@@ -1,5 +1,5 @@
 FROM openjdk:11-jre
 WORKDIR /app
-COPY your-application.war /app/your-application.war
+COPY my-app.war /app/my-app.war
 EXPOSE 8080
-CMD ["java", "-jar", "your-application.war"]
+CMD ["java", "-jar", "my-app.war"]
